@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace에는 구현 인터페이스 풀경로 -->
+<mapper namespace="com.simple.basic.mapper.TestMapper">
+	<!-- id에는 추상메서드 명이 들어감 -->
+	<!-- select 태그 resultType에는 결과를 반환 받아서 나올 타입 or 객체 -->
+	<!-- 세미콜론은 적지 않음 -->
+	<select id="getTime" resultType="string"><!-- string을 소문자로 적기.. -->
+		select now()
+	</select>
+	
+	
+	<!-- 파라미터탑입: int, double, string -->
+	<!-- 매객변수가 단일값이라면 인터페이스 이름을 따라감 -->
+	<insert id="insertOne" parameterType="string"> <!-- parameterType은 생략이 가능 -->
+		insert into score (name)
+		values (#{name})
+	</insert>
+	
+	
+	<!-- vo가 매개변수인 경우에는 getter명을 따라간다 -->
+	<insert id="insertTwo">
+		insert into score (name, kor, eng)
+		values (#{name}, #{kor}, #{eng})
+	</insert>
+	
+	<insert id="insertThree">
+		insert into score(name, kor, eng)
+		values (#{name}, #{kor}, #{eng})
+	</insert>
+	
+	<insert id="insertFour">
+		insert into score(name, kor, eng)
+		values (#{name}, #{kor}, #{eng})
+	</insert>
+	
+	<!-- update문 -->
+	<update id="updateOne">
+		update score set name = #{name}, kor = #{kor}, eng = #{eng}
+		where num = #{num}
+	</update>
+	
+	<!-- 셀렉트문은 ResultType이 필수-->
+	<!-- mybatis-config폴더 mybatis-config.xml에 엘리어스로 등록되어있다면 전체경로 대신 단축명을 사용할 수 있다. -->
+	<select id="selectOne" resultType="ScoreVO">  
+		select * from score where num = #{num}
+	</select>
+	
+	<!-- 웬만하면 VO로 처리하려고 노력하세요... -->
+	<select id="selectTwo" resultType="map">
+		select * from score where num = #{num}
+	</select>
+	
+	<select id="selectThree" resultType="map">
+		select * from score
+	</select>
+	
+	<!-- M:1 조인 -->
+	<select id="joinOne" resultType="ScoreVO">
+		select * from score s left join member m on s.name = m.id
+	</select>
+	
+	<!-- 1:M 조인 -->
+	<!-- resultMap은 1:M 조인처리 -->
+	<select id="joinTwo" resultMap="xxx">
+		select * from member m
+		left join score s
+		on m.id = s.name where id = #{name}
+	</select>
+	
+	<!-- type=ORM객체 id=명칭 -->
+	<resultMap type="com.simple.command.MemberVO" id="xxx">
+		<result column="id" property="id"/>		
+		<result column="addr" property="addr"/>		
+		<collection property="list" resultMap="yyy" />
+	</resultMap>
+	<resultMap type="com.simple.command.ScoreVO" id="yyy">
+		<result column="num" property="num"/>
+		<result column="name" property="name"/>
+		<result column="kor" property="kor"/>
+		<result column="eng" property="eng"/>
+	</resultMap>
+	
+</mapper>
+

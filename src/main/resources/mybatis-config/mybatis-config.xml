@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  
+  <!-- mybatis 관련 부가설정을 할 수 있음 -->
+  <configuration>
+	<typeAliases>
+		<typeAlias type="com.simple.command.ScoreVO" alias="ScoreVO"/>
+	</typeAliases>  
+  </configuration>
